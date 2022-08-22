@@ -14,6 +14,6 @@ class Member(models.Model):
 
 class Message(models.Model):
     user = models.OneToOneField(Member, on_delete=models.CASCADE)
-    chat_room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE)
+    chat_room = models.ForeignKey(ChatRoom, on_delete=models.CASCADE, related_name='message')
     created_at = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
