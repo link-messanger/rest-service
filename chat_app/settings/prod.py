@@ -14,3 +14,7 @@ ALLOWED_HOSTS = ['amir-chatapp.herokuapp.com']
 DATABASES = {
     'default': dj_database_url.config()
 }
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('JWT',),
+}
