@@ -131,4 +131,7 @@ dmypy.json
 #pycharm
 .idea
 
+#vscode
+.vscode
+
 chat_app/settings/dev.py
