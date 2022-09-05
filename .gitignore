@@ -136,3 +136,4 @@ dmypy.json
 
 chat_app/settings/dev.py
 docker-compose.yml
+entrypoint.sh
