@@ -1,0 +1,52 @@
+version: '3.9'
+
+volumes:
+  postgres_data:
+  django_static:
+
+services:
+  dbak-postgres:
+    image: postgres:11-alpine
+    volumes:
+      - type: volume
+        source: postgres_data
+        target: /var/lib/postgresql/data
+    env_file:
+      - env/db/.env
+    restart: "on-failure"
+    ports:
+      - "4962:5432"
+    container_name: dbak-postgres
+
+  django:
+    container_name: link_c
+    build: .
+    ports:
+      - "7000:7000"
+    image: chat_app
+    restart: "on-failure"
+    volumes:
+      - type: volume
+        source: django_static
+        target: /code/static
+    depends_on:
+      - dbak-postgres
+    command: >
+      bash -c '
+      python3 /code/manage.py collectstatic --no-input &&
+      gunicorn chat_app.wsgi:application --bind 0.0.0.0:7000'
+    env_file:
+      - env/web/.env
+  nginx:
+    container_name: nginx
+    build: ./nginx
+    image: nginx
+    restart: "on-failure"
+    depends_on:
+      - django
+    ports:
+      - "1300:80"
+    volumes:
+      - type: volume
+        source: django_static
+        target: /usr/share/nginx/html/static
